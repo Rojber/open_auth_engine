@@ -1,11 +1,14 @@
 import secrets
 import json
 import random
-from flask import Flask, request
+from flask import Flask, request, flash, redirect, url_for, render_template, session
 from twilio.rest import Client
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config["DEBUG"] = True
+
+app.secret_key = "jakis klucz"
 
 # Your Account SID from twilio.com/console
 twilio_account_sid = "AC2d7906eb701a6f425a68afc9ad0713cc"
@@ -14,6 +17,26 @@ twilio_auth_token = "c1d6735040fc608c036450b7fe2788da"
 
 registered_clients = []
 user_verification = []
+
+
+class RegistrationForm(Form):
+    name = StringField('', [validators.Length(min=2, max=50)], render_kw={"placeholder": "App name"})
+    accept = BooleanField('I accept something', [validators.DataRequired()])
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        client_name = form.name.data
+        auth_token = secrets.token_hex(24)
+        # TODO
+        # insert data into db
+        # check if app exists
+        registered_clients.append({'client_name': client_name, 'client_data': 'co tu dac?', 'auth_token': auth_token})
+        flash('Thanks for registering')
+        return str(auth_token)
+    return render_template('register.html', form=form)
 
 
 @app.route('/api/register', methods=['GET', 'POST', 'DELETE'])

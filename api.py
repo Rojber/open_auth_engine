@@ -56,8 +56,7 @@ def register():
         client_password = form.password
         client_auth_token = secrets.token_hex(24)
 
-        db = mongo.open_auth_engine_db
-        result = db.clients.find_one(
+        result = mongo.db.clients.find_one(
             {
                 'client_email': str(client_email),
                 'client_name': str(client_name)

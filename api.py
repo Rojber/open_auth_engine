@@ -94,8 +94,8 @@ def login():
         # check login and password and return user data
         response = mongo.db.clients.find_one(
             {
-                'client_name': str(client_email),
-                'client_password': str(client_password)
+                'client_name': client_email,
+                'client_password': client_password
             },
             {
                 '_id': 0,

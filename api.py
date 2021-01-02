@@ -18,9 +18,6 @@ mongo = PyMongo(app)
 TWILLIO_ACCOUNT_SID = os.environ["TWILLIO_ACCOUNT_SID"]
 TWILLIO_AUTCH_TOKEN = os.environ["TWILLIO_AUTCH_TOKEN"]
 
-registered_clients = []
-user_verification = []
-
 
 class RegistrationForm(Form):
     name = StringField('', [validators.Length(min=2, max=50), validators.DataRequired()], render_kw={"placeholder": "App name"})
@@ -63,9 +60,8 @@ def register():
                 'client_name': str(client_name)
             }
         )
-        print(result)
         if result is not None:
-            return json.dumps({'message': 'CLIENT WITH SUCH EMAIL OR NAME ALREADY EXISTS', 'response': []}), 400
+            return 'CLIENT WITH SUCH EMAIL OR NAME ALREADY EXISTS', 400
 
         # insert new client
         client = {
@@ -89,8 +85,7 @@ def login():
     if request.method == 'POST' and form.validate():
         client_email = form.email.data
         client_password = form.password.data
-        print(client_email)
-        print(client_password)
+
         # check login and password and return user data
         response = mongo.db.clients.find_one(
             {
@@ -102,7 +97,10 @@ def login():
                 'client_password': 0
             }
         )
-        print(response)
+        if response is None:
+            # TODO
+            return "niezalogowany"
+
         return json.dumps(response)  # "zalogowany"
     else:
         flash('From error.')

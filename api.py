@@ -102,7 +102,7 @@ def login():
             }
         )
 
-        return response  # "zalogowany"
+        return json.dumps(response)  # "zalogowany"
     else:
         flash('From error.')
         return redirect(url_for('index'))

@@ -13,6 +13,7 @@ app.config["DEBUG"] = True
 app.secret_key = "jakis klucz"
 app.config['MONG_DBNAME'] = 'open_auth_engine_db'
 app.config['MONGO_URI'] = os.environ["MONGODB_CONNECTION_STRING"]
+mongo = PyMongo(app)
 
 TWILLIO_ACCOUNT_SID = os.environ["TWILLIO_ACCOUNT_SID"]
 TWILLIO_AUTCH_TOKEN = os.environ["TWILLIO_AUTCH_TOKEN"]
@@ -54,6 +55,17 @@ def register():
         client_email = form.email
         client_password = form.password
         client_auth_token = secrets.token_hex(24)
+
+        db = mongo.open_auth_engine_db
+        result = db.clients.find_one(
+            {
+                'client_email': str(client_email),
+                'client_name': str(client_name)
+            })
+        print(result)
+        if result is not None:
+            return json.dumps({'message': 'CLIENT WITH SUCH EMAIL OR NAME ALREADY EXISTS', 'response': []}), 400
+
         # TODO
         # insert data into db
         # check if app exists

@@ -1,7 +1,9 @@
 import secrets
 import json
 import random
+import os
 from flask import Flask, request, flash, redirect, url_for, render_template, session
+from flask_pymongo import PyMongo
 from twilio.rest import Client
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
@@ -9,11 +11,11 @@ app = Flask(__name__, template_folder='templates')
 app.config["DEBUG"] = True
 
 app.secret_key = "jakis klucz"
+app.config['MONG_DBNAME'] = 'open_auth_engine_db'
+app.config['MONGO_URI'] = os.environ["MONGODB_CONNECTION_STRING"]
 
-# Your Account SID from twilio.com/console
-twilio_account_sid = "AC2d7906eb701a6f425a68afc9ad0713cc"
-# Your Auth Token from twilio.com/console
-twilio_auth_token = "c1d6735040fc608c036450b7fe2788da"
+TWILLIO_ACCOUNT_SID = os.environ["TWILLIO_ACCOUNT_SID"]
+TWILLIO_AUTCH_TOKEN = os.environ["TWILLIO_AUTCH_TOKEN"]
 
 registered_clients = []
 user_verification = []
@@ -96,7 +98,7 @@ def client_login():
     if client_name is None:
         return 'UNAUTHORIZED', 400
 
-    client = Client(twilio_account_sid, twilio_auth_token)
+    client = Client(TWILLIO_ACCOUNT_SID, TWILLIO_AUTCH_TOKEN)
     user_verification_code = ''.join(str(random.randint(0, 9)) for _ in range(6))
     user_verification.append({'user_number': js['user_number'], 'user_verification_code': user_verification_code})
     message = client.messages.create(

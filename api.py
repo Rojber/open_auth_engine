@@ -56,6 +56,7 @@ def register():
         client_password = form.password.data
         client_auth_token = secrets.token_hex(24)
 
+        # check if email and name already exists
         result = mongo.db.clients.find_one(
             {
                 'client_email': str(client_email),
@@ -65,16 +66,16 @@ def register():
         print(result)
         if result is not None:
             return json.dumps({'message': 'CLIENT WITH SUCH EMAIL OR NAME ALREADY EXISTS', 'response': []}), 400
+
+        # insert new client
         client = {
             'client_name': str(client_name),
             'client_email': str(client_email),
             'client_password': str(client_password),
             'client_auth_token': client_auth_token
         }
-        result = mongo.db.clients.insert_one(client)
-        # TODO
-        # insert data into db
-        # check if app exists
+        mongo.db.clients.insert_one(client)
+
         form2 = LoginForm(request.form)
         return render_template('register.html', form=form, form2=form2, message="Thanks for registering. Login to manage your app.")
     else:
@@ -86,17 +87,28 @@ def register():
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-        client_email = form.email
-        client_password = form.password
-        # TODO
-        # check password
-        # return user data from database
-        return "zalogowany"
+        client_email = form.email.data
+        client_password = form.password.data
+
+        # check login and password and return user data
+        response = mongo.db.clients.find_one(
+            {
+                'client_name': str(client_email),
+                'client_password': str(client_password)
+            },
+            {
+                '_id': 0,
+                'client_password': 0
+            }
+        )
+
+        return response  # "zalogowany"
     else:
         flash('From error.')
         return redirect(url_for('index'))
 
 
+"""
 @app.route('/api/register', methods=['GET', 'POST', 'DELETE'])
 def client_registration():
     js = request.json
@@ -104,21 +116,40 @@ def client_registration():
     auth_token = secrets.token_hex(24)
     registered_clients.append({'client_name': js['client_name'], 'client_data': js['client_data'], 'auth_token': auth_token})
     return json.dumps({'auth_token': auth_token}), 200
+"""
 
 
 @app.route('/api/send_sms', methods=['POST'])
 def client_login():
     js = request.json
-    client_name = None
+
+    response = mongo.db.clients.find_one(
+        {
+            'auth_token': js['auth_token']
+        },
+        {
+            'client_name': 1
+        }
+    )
+    if response is None:
+        return 'UNAUTHORIZED', 400
+
+    client_name = response['client_name']
+
+    """client_name = None
     for record in registered_clients:
         if record['auth_token'] == js['auth_token']:
             client_name = record['client_name']
     if client_name is None:
-        return 'UNAUTHORIZED', 400
+        return 'UNAUTHORIZED', 400"""
 
     client = Client(TWILLIO_ACCOUNT_SID, TWILLIO_AUTCH_TOKEN)
-    user_verification_code = ''.join(str(random.randint(0, 9)) for _ in range(6))
-    user_verification.append({'user_number': js['user_number'], 'user_verification_code': user_verification_code})
+    """user_verification_code = ''.join(str(random.randint(0, 9)) for _ in range(6))
+    user_verification.append({'user_number': js['user_number'], 'user_verification_code': user_verification_code})"""
+
+    user_verification_code = secrets.token_hex(6)
+    mongo.db.user_verification.insert_one({{'user_number': js['user_number'], 'user_verification_code': str(user_verification_code)}})
+
     message = client.messages.create(
         to="+48" + js['user_number'],
         from_="+19379155858",
@@ -130,17 +161,42 @@ def client_login():
 @app.route('/api/verify_sms', methods=['POST'])
 def verify():
     js = request.json
-    client_name = None
+
+    """client_name = None
     for record in registered_clients:
         if record['auth_token'] == js['auth_token']:
             client_name = record['client_name']
     if client_name is None:
+        return 'UNAUTHORIZED', 400"""
+
+    result = mongo.db.clients.find_one(
+        {
+            'auth_token': js['auth_token']
+        },
+        {
+            '_id': 1
+        }
+    )
+    if result is None:
         return 'UNAUTHORIZED', 400
 
-    for record in user_verification:
+    response = mongo.db.user_verification.find_one(
+        {
+            'user_verification_code': js['user_verification_code'],
+            'user_number': js['user_number']
+        },
+        {
+            '_id': 1
+        }
+    )
+    if response is not None:
+        mongo.db.user_verification.delete_one({'_id': response['_id']})
+        return 'VERIFIED SUCCESSFULLY', 200
+
+    """for record in user_verification:
         if record['user_verification_code'] == js['user_verification_code']:
             user_verification.remove(record)
-            return 'VERIFIED SUCCESSFULLY', 200
+            return 'VERIFIED SUCCESSFULLY', 200"""
     return 'WRONG CODE', 400
 
 

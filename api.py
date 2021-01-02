@@ -20,23 +20,61 @@ user_verification = []
 
 
 class RegistrationForm(Form):
-    name = StringField('', [validators.Length(min=2, max=50)], render_kw={"placeholder": "App name"})
-    accept = BooleanField('I accept something', [validators.DataRequired()])
+    name = StringField('', [validators.Length(min=2, max=50), validators.DataRequired()], render_kw={"placeholder": "App name"})
+    email = StringField('', [validators.Length(min=6, max=35), validators.DataRequired()],render_kw={"placeholder": "Email"})
+    password = PasswordField('', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ], render_kw={"placeholder": "Password"})
+    confirm = PasswordField('', render_kw={"placeholder": "Repeat Password"})
+    accept = BooleanField('I accept policy', [validators.DataRequired()])
+
+
+class LoginForm(Form):
+    email = StringField('', [validators.Length(min=6, max=35)], render_kw={"placeholder": "Email"})
+    password = PasswordField('', [
+        validators.DataRequired()
+    ], render_kw={"placeholder": "Password"})
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = RegistrationForm(request.form)
+    form2 = LoginForm(request.form)
+    return render_template('register.html', form=form, form2=form2)
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
         client_name = form.name.data
-        auth_token = secrets.token_hex(24)
+        client_email = form.email
+        client_password = form.password
+        client_auth_token = secrets.token_hex(24)
         # TODO
         # insert data into db
         # check if app exists
-        registered_clients.append({'client_name': client_name, 'client_data': 'co tu dac?', 'auth_token': auth_token})
-        flash('Thanks for registering')
-        return str(auth_token)
-    return render_template('register.html', form=form)
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, message="Thanks for registering. Login to manage your app.")
+    else:
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, error="Form error")
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        client_email = form.email
+        client_password = form.password
+        # TODO
+        # check password
+        # return user data from database
+        return "zalogowany"
+    else:
+        flash('From error.')
+        return redirect(url_for('index'))
 
 
 @app.route('/api/register', methods=['GET', 'POST', 'DELETE'])
@@ -49,7 +87,7 @@ def client_registration():
 
 
 @app.route('/api/send_sms', methods=['POST'])
-def login():
+def client_login():
     js = request.json
     client_name = None
     for record in registered_clients:

@@ -39,6 +39,15 @@
 </head>
 <body>
 {% from "formmacro.html" import render_field %}
+{% if error %}
+        <p><strong>Error</strong>: {{error}}</p>
+    {% endif %}
+{% if message %}
+        <p>Message: {{message}}</p>
+    {% endif %}
+<p style="height:20px;"></p>
+<div class="d-flex justify-content-center">
+
 <div class="container register-form">
             <div class="form">
                 <div class="note">
@@ -46,11 +55,14 @@
                 </div>
 
                 <div class="form-content" align="center">
-<form method=post>
+<form method=post action="{{ url_for('register') }}">
   <div class="row justify-content-center">
                         <div class="col-md-6">
   <dl>
     {{ render_field(form.name) }}
+      {{ render_field(form.email) }}
+      {{ render_field(form.password) }}
+      {{ render_field(form.confirm) }}
     {{ render_field(form.accept) }}
   </dl>
   </div>
@@ -60,6 +72,31 @@
 
                 </div>
             </div>
+</div>
+
+
+<div class="container register-form">
+            <div class="form">
+                <div class="note">
+                    <p>Below you can login to manage your app.</p>
+                </div>
+
+                <div class="form-content" align="center">
+<form method=post action="{{ url_for('login') }}">
+  <div class="row justify-content-center">
+                        <div class="col-md-6">
+  <dl>
+    {{ render_field(form2.email) }}
+    {{ render_field(form2.password) }}
+  </dl>
+  </div>
+                    </div>
+   <input type=submit value=Login class="btnSubmit">
+</form>
+
+                </div>
+            </div>
+</div>
 </div>
 </body>
 </html>

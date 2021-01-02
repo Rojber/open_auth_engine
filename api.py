@@ -52,8 +52,8 @@ def register():
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
         client_name = form.name.data
-        client_email = form.email
-        client_password = form.password
+        client_email = form.email.data
+        client_password = form.password.data
         client_auth_token = secrets.token_hex(24)
 
         result = mongo.db.clients.find_one(

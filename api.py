@@ -101,7 +101,7 @@ def login():
                 'client_password': 0
             }
         )
-
+        print(response)
         return json.dumps(response)  # "zalogowany"
     else:
         flash('From error.')

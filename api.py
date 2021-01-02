@@ -89,7 +89,8 @@ def login():
     if request.method == 'POST' and form.validate():
         client_email = form.email.data
         client_password = form.password.data
-
+        print(client_email)
+        print(client_password)
         # check login and password and return user data
         response = mongo.db.clients.find_one(
             {

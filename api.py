@@ -66,9 +66,9 @@ def register():
         if result is not None:
             return json.dumps({'message': 'CLIENT WITH SUCH EMAIL OR NAME ALREADY EXISTS', 'response': []}), 400
         client = {
-            'client_name': client_name,
-            'client_email': client_email,
-            'client_password': client_password,
+            'client_name': str(client_name),
+            'client_email': str(client_email),
+            'client_password': str(client_password),
             'client_auth_token': client_auth_token
         }
         result = mongo.db.clients.insert_one(client)

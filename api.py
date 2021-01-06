@@ -13,6 +13,7 @@ app.config["DEBUG"] = True
 app.secret_key = "jakis klucz"
 app.config['MONG_DBNAME'] = 'open_auth_engine_db'
 app.config['MONGO_URI'] = os.environ["MONGODB_CONNECTION_STRING"]
+
 mongo = PyMongo(app)
 
 TWILLIO_ACCOUNT_SID = os.environ["TWILLIO_ACCOUNT_SID"]
@@ -35,6 +36,10 @@ class LoginForm(Form):
     password = PasswordField('', [
         validators.DataRequired()
     ], render_kw={"placeholder": "Password"})
+
+
+class DeleteForm(Form):
+    accept = BooleanField('I confirm that I want to delete the account', [validators.DataRequired()])
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -60,8 +65,9 @@ def register():
                 'client_name': str(client_name)
             }
         )
+        form2 = LoginForm(request.form)
         if result is not None:
-            return 'CLIENT WITH SUCH EMAIL OR NAME ALREADY EXISTS', 400
+            return render_template('register.html', form=form, form2=form2, message="Account already exists.")
 
         # insert new client
         client = {
@@ -72,7 +78,6 @@ def register():
         }
         mongo.db.clients.insert_one(client)
 
-        form2 = LoginForm(request.form)
         return render_template('register.html', form=form, form2=form2, message="Thanks for registering. Login to manage your app.")
     else:
         form2 = LoginForm(request.form)
@@ -98,15 +103,28 @@ def login():
             }
         )
         if response is None:
-            # TODO
-            return "niezalogowany"
-
-        return json.dumps(response)  # "zalogowany"
+            form2 = RegistrationForm(request.form)
+            return render_template('register.html', form=form2, form2=form, error="Wrong email or password.")
+        return render_template('info.html', client_name=response['client_name'], client_email=response['client_email'], client_token=response['client_auth_token'])
     else:
-        flash('From error.')
-        return redirect(url_for('index'))
+        form2 = RegistrationForm(request.form)
+        return render_template('register.html', form=form2, form2=form, error="Form error")
 
 
+@app.route('/delete/<name>', methods=['GET', 'POST'])
+def delete(name):
+    deleteForm = DeleteForm(request.form)
+    if request.method == 'POST' and deleteForm.validate():
+        # TODO usuń konto z bazy (parametr name = nazwa apki)
+        form = RegistrationForm(request.form)
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, message='Account deleted')
+    elif request.method == 'GET':
+        return render_template('delete.html', form=deleteForm)
+    else:
+        form = RegistrationForm(request.form)
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, error="Form error")
 """
 @app.route('/api/register', methods=['GET', 'POST', 'DELETE'])
 def client_registration():

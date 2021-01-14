@@ -116,6 +116,11 @@ def delete(name):
     deleteForm = DeleteForm(request.form)
     if request.method == 'POST' and deleteForm.validate():
         # TODO usuń konto z bazy (parametr name = nazwa apki)
+        mongo.db.clients.delete_one(
+            {
+                'client_name': name
+            }
+        )
         form = RegistrationForm(request.form)
         form2 = LoginForm(request.form)
         return render_template('register.html', form=form, form2=form2, message='Account deleted')
@@ -125,6 +130,8 @@ def delete(name):
         form = RegistrationForm(request.form)
         form2 = LoginForm(request.form)
         return render_template('register.html', form=form, form2=form2, error="Form error")
+
+
 """
 @app.route('/api/register', methods=['GET', 'POST', 'DELETE'])
 def client_registration():

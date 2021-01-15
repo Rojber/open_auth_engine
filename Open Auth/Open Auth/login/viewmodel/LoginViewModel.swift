@@ -1,6 +1,6 @@
 //
 //  LoginViewModel.swift
-//  test
+//  Open Auth
 //
 //  Created by Robert Moryson on 15/01/2021.
 //

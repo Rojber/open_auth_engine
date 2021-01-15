@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire",
+        "state": {
+          "branch": null,
+          "revision": "eaf6e622dd41b07b251d8f01752eab31bc811493",
+          "version": "5.4.1"
+        }
+      },
+      {
+        "package": "Lottie",
+        "repositoryURL": "https://github.com/airbnb/lottie-ios",
+        "state": {
+          "branch": null,
+          "revision": "e02e82c7c1b472e85e641a7624e99c855e21add1",
+          "version": "3.1.9"
+        }
+      },
+      {
+        "package": "PopupView",
+        "repositoryURL": "https://github.com/exyte/PopupView.git",
+        "state": {
+          "branch": null,
+          "revision": "fd37cca19583f784288dc3f1d22e9c5c69d6fd68",
+          "version": "0.0.10"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

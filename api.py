@@ -115,7 +115,6 @@ def login():
 def delete(name):
     deleteForm = DeleteForm(request.form)
     if request.method == 'POST' and deleteForm.validate():
-        # TODO usuń konto z bazy (parametr name = nazwa apki)
         mongo.db.clients.delete_one(
             {
                 'client_name': name
@@ -149,7 +148,7 @@ def client_login():
 
     response = mongo.db.clients.find_one(
         {
-            'auth_token': js['auth_token']
+            'client_auth_token': js['auth_token']
         },
         {
             'client_name': 1
@@ -195,7 +194,7 @@ def verify():
 
     result = mongo.db.clients.find_one(
         {
-            'auth_token': js['auth_token']
+            'client_auth_token': js['auth_token']
         },
         {
             '_id': 1

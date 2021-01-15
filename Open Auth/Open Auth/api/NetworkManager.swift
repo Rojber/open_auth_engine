@@ -1,6 +1,6 @@
 //
 //  NetworkManager.swift
-//  test
+//  Open Auth
 //
 //  Created by Robert Moryson on 17/11/2020.
 //
@@ -9,23 +9,27 @@ import UIKit
 import Combine
 import Alamofire
 
-struct SentSmsRequest: Codable {
-    var token: String
-    var phone: String
-}
-
 class NetworkManager {
     private let requestManager = RequestManager()
     
-    func sendSms(phone: String) -> Future<String?, Never> {
-        let data = SentSmsRequest(token: "email", phone: "545454545445")
+    func sendSms(phone: String) -> Future<Bool, LoginError> {
+        let data = SentSmsRequest(token: "3bffdfde9a00e30cda50947bc786b2e21f2081e6e1b1fad5", phone: phone)
         let request = requestManager.createRequest(data: data, endpoint: .sendSms, httpMethod: .post)
         
-        return Future<String?, Never> { promise in
+        return Future<Bool, LoginError> { promise in
             AF.request(request)
                 .responseString { response in
-                    print(response)
-                    return promise(.success(response.value))
+                    guard let value = response.value else {
+                        return promise(.failure(.other))
+                    }
+                    switch value {
+                    case "SMS SENT":
+                        return promise(.success(true))
+                    case "UNAUTHORIZED":
+                        return promise(.failure(.unauthorized))
+                    default:
+                        return promise(.failure(.other))
+                    }
                 }
         }
     }

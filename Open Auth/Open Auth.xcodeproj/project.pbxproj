@@ -17,11 +17,12 @@
 		B1D9C0B925B2038800195B7E /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = B1D9C0B825B2038800195B7E /* PopupView */; };
 		B1D9C0BD25B203B300195B7E /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B1D9C0BC25B203B300195B7E /* Lottie */; };
 		B1D9C0C325B204B800195B7E /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0C225B204B800195B7E /* LoginViewModel.swift */; };
-		B1D9C0C625B204FB00195B7E /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0C525B204FB00195B7E /* UserSettings.swift */; };
 		B1D9C0CD25B2063F00195B7E /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0CC25B2063F00195B7E /* RequestManager.swift */; };
 		B1D9C0D525B20C2500195B7E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B1D9C0D425B20C2500195B7E /* Alamofire */; };
 		B1D9C0D925B20CAE00195B7E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0D825B20CAE00195B7E /* NetworkManager.swift */; };
 		B1D9C0DE25B2117000195B7E /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0DD25B2117000195B7E /* LottieView.swift */; };
+		B1D9C0E225B21AB800195B7E /* SentSmsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0E125B21AB800195B7E /* SentSmsRequest.swift */; };
+		B1D9C0E725B2296500195B7E /* LoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0E625B2296500195B7E /* LoginError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,10 +36,11 @@
 		B1D9C0AB25B1FA0800195B7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1D9C0B325B2032700195B7E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B1D9C0C225B204B800195B7E /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		B1D9C0C525B204FB00195B7E /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		B1D9C0CC25B2063F00195B7E /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		B1D9C0D825B20CAE00195B7E /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		B1D9C0DD25B2117000195B7E /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		B1D9C0E125B21AB800195B7E /* SentSmsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentSmsRequest.swift; sourceTree = "<group>"; };
+		B1D9C0E625B2296500195B7E /* LoginError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		B1D9C0B225B2031800195B7E /* login */ = {
 			isa = PBXGroup;
 			children = (
+				B1D9C0E025B21AAC00195B7E /* model */,
 				B1D9C0C025B203D800195B7E /* viewmodel */,
 				B1D9C0BF25B203D400195B7E /* view */,
 			);
@@ -123,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				B1D9C0DD25B2117000195B7E /* LottieView.swift */,
-				B1D9C0C525B204FB00195B7E /* UserSettings.swift */,
 				B1D9C09D25B1FA0400195B7E /* AppDelegate.swift */,
 				B1D9C09F25B1FA0400195B7E /* SceneDelegate.swift */,
 			);
@@ -137,6 +139,15 @@
 				B1D9C0D825B20CAE00195B7E /* NetworkManager.swift */,
 			);
 			path = api;
+			sourceTree = "<group>";
+		};
+		B1D9C0E025B21AAC00195B7E /* model */ = {
+			isa = PBXGroup;
+			children = (
+				B1D9C0E125B21AB800195B7E /* SentSmsRequest.swift */,
+				B1D9C0E625B2296500195B7E /* LoginError.swift */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,9 +232,10 @@
 			files = (
 				B1D9C0D925B20CAE00195B7E /* NetworkManager.swift in Sources */,
 				B1D9C09E25B1FA0400195B7E /* AppDelegate.swift in Sources */,
+				B1D9C0E725B2296500195B7E /* LoginError.swift in Sources */,
 				B1D9C0DE25B2117000195B7E /* LottieView.swift in Sources */,
-				B1D9C0C625B204FB00195B7E /* UserSettings.swift in Sources */,
 				B1D9C0CD25B2063F00195B7E /* RequestManager.swift in Sources */,
+				B1D9C0E225B21AB800195B7E /* SentSmsRequest.swift in Sources */,
 				B1D9C0A025B1FA0400195B7E /* SceneDelegate.swift in Sources */,
 				B1D9C0B425B2032700195B7E /* LoginView.swift in Sources */,
 				B1D9C0C325B204B800195B7E /* LoginViewModel.swift in Sources */,

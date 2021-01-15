@@ -171,7 +171,7 @@ def client_login():
     user_verification.append({'user_number': js['user_number'], 'user_verification_code': user_verification_code})"""
 
     user_verification_code = secrets.token_hex(6)
-    mongo.db.user_verification.insert_one({{'user_number': js['user_number'], 'user_verification_code': str(user_verification_code)}})
+    mongo.db.user_verification.insert_one({'user_number': js['user_number'], 'user_verification_code': str(user_verification_code)})
 
     message = client.messages.create(
         to="+48" + js['user_number'],

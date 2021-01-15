@@ -23,6 +23,8 @@
 		B1D9C0DE25B2117000195B7E /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0DD25B2117000195B7E /* LottieView.swift */; };
 		B1D9C0E225B21AB800195B7E /* SentSmsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0E125B21AB800195B7E /* SentSmsRequest.swift */; };
 		B1D9C0E725B2296500195B7E /* LoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D9C0E625B2296500195B7E /* LoginError.swift */; };
+		B1D9C0EB25B22FAB00195B7E /* animation.json in Resources */ = {isa = PBXBuildFile; fileRef = B1D9C0EA25B22FAB00195B7E /* animation.json */; };
+		B1D9C0EF25B2317300195B7E /* iPhoneNumberField in Frameworks */ = {isa = PBXBuildFile; productRef = B1D9C0EE25B2317300195B7E /* iPhoneNumberField */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,7 @@
 		B1D9C0DD25B2117000195B7E /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		B1D9C0E125B21AB800195B7E /* SentSmsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentSmsRequest.swift; sourceTree = "<group>"; };
 		B1D9C0E625B2296500195B7E /* LoginError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginError.swift; sourceTree = "<group>"; };
+		B1D9C0EA25B22FAB00195B7E /* animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = animation.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +52,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1D9C0D525B20C2500195B7E /* Alamofire in Frameworks */,
+				B1D9C0EF25B2317300195B7E /* iPhoneNumberField in Frameworks */,
 				B1D9C0B925B2038800195B7E /* PopupView in Frameworks */,
 				B1D9C0BD25B203B300195B7E /* Lottie in Frameworks */,
 			);
@@ -76,6 +80,7 @@
 		B1D9C09C25B1FA0400195B7E /* Open Auth */ = {
 			isa = PBXGroup;
 			children = (
+				B1D9C0E925B22F9900195B7E /* resources */,
 				B1D9C0CB25B2062B00195B7E /* api */,
 				B1D9C0C125B203E400195B7E /* common */,
 				B1D9C0B225B2031800195B7E /* login */,
@@ -150,6 +155,14 @@
 			path = model;
 			sourceTree = "<group>";
 		};
+		B1D9C0E925B22F9900195B7E /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				B1D9C0EA25B22FAB00195B7E /* animation.json */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -170,6 +183,7 @@
 				B1D9C0B825B2038800195B7E /* PopupView */,
 				B1D9C0BC25B203B300195B7E /* Lottie */,
 				B1D9C0D425B20C2500195B7E /* Alamofire */,
+				B1D9C0EE25B2317300195B7E /* iPhoneNumberField */,
 			);
 			productName = "Open Auth";
 			productReference = B1D9C09A25B1FA0400195B7E /* Open Auth.app */;
@@ -202,6 +216,7 @@
 				B1D9C0B725B2038800195B7E /* XCRemoteSwiftPackageReference "PopupView" */,
 				B1D9C0BB25B203B300195B7E /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				B1D9C0D325B20C2500195B7E /* XCRemoteSwiftPackageReference "Alamofire" */,
+				B1D9C0ED25B2317300195B7E /* XCRemoteSwiftPackageReference "iPhoneNumberField" */,
 			);
 			productRefGroup = B1D9C09B25B1FA0400195B7E /* Products */;
 			projectDirPath = "";
@@ -219,6 +234,7 @@
 			files = (
 				B1D9C0AA25B1FA0800195B7E /* LaunchScreen.storyboard in Resources */,
 				B1D9C0A725B1FA0800195B7E /* Preview Assets.xcassets in Resources */,
+				B1D9C0EB25B22FAB00195B7E /* animation.json in Resources */,
 				B1D9C0A425B1FA0700195B7E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,6 +479,14 @@
 				minimumVersion = 5.4.1;
 			};
 		};
+		B1D9C0ED25B2317300195B7E /* XCRemoteSwiftPackageReference "iPhoneNumberField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MojtabaHs/iPhoneNumberField";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -480,6 +504,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B1D9C0D325B20C2500195B7E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		B1D9C0EE25B2317300195B7E /* iPhoneNumberField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1D9C0ED25B2317300195B7E /* XCRemoteSwiftPackageReference "iPhoneNumberField" */;
+			productName = iPhoneNumberField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

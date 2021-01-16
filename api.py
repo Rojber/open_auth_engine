@@ -1,6 +1,4 @@
 import secrets
-import json
-import random
 import os
 from flask import Flask, request, flash, redirect, url_for, render_template, session
 from flask_pymongo import PyMongo
@@ -9,7 +7,6 @@ from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 app = Flask(__name__, template_folder='templates')
 app.config["DEBUG"] = True
-
 app.secret_key = "jakis klucz"
 app.config['MONG_DBNAME'] = 'open_auth_engine_db'
 app.config['MONGO_URI'] = os.environ["MONGODB_CONNECTION_STRING"]
@@ -87,6 +84,7 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     form = LoginForm(request.form)
+
     if request.method == 'POST' and form.validate():
         client_email = form.email.data
         client_password = form.password.data
@@ -114,7 +112,9 @@ def login():
 @app.route('/delete/<name>', methods=['GET', 'POST'])
 def delete(name):
     deleteForm = DeleteForm(request.form)
+
     if request.method == 'POST' and deleteForm.validate():
+        # delete client by name
         mongo.db.clients.delete_one(
             {
                 'client_name': name
@@ -129,17 +129,6 @@ def delete(name):
         form = RegistrationForm(request.form)
         form2 = LoginForm(request.form)
         return render_template('register.html', form=form, form2=form2, error="Form error")
-
-
-"""
-@app.route('/api/register', methods=['GET', 'POST', 'DELETE'])
-def client_registration():
-    js = request.json
-    print(js)
-    auth_token = secrets.token_hex(24)
-    registered_clients.append({'client_name': js['client_name'], 'client_data': js['client_data'], 'auth_token': auth_token})
-    return json.dumps({'auth_token': auth_token}), 200
-"""
 
 
 @app.route('/api/send_sms', methods=['POST'])
@@ -159,18 +148,9 @@ def client_login():
 
     client_name = response['client_name']
 
-    """client_name = None
-    for record in registered_clients:
-        if record['auth_token'] == js['auth_token']:
-            client_name = record['client_name']
-    if client_name is None:
-        return 'UNAUTHORIZED', 400"""
-
     client = Client(TWILLIO_ACCOUNT_SID, TWILLIO_AUTCH_TOKEN)
-    """user_verification_code = ''.join(str(random.randint(0, 9)) for _ in range(6))
-    user_verification.append({'user_number': js['user_number'], 'user_verification_code': user_verification_code})"""
 
-    user_verification_code = secrets.token_hex(6)
+    user_verification_code = secrets.token_hex(3)
     mongo.db.user_verification.insert_one({'user_number': js['user_number'], 'user_verification_code': str(user_verification_code)})
 
     message = client.messages.create(
@@ -184,13 +164,6 @@ def client_login():
 @app.route('/api/verify_sms', methods=['POST'])
 def verify():
     js = request.json
-
-    """client_name = None
-    for record in registered_clients:
-        if record['auth_token'] == js['auth_token']:
-            client_name = record['client_name']
-    if client_name is None:
-        return 'UNAUTHORIZED', 400"""
 
     result = mongo.db.clients.find_one(
         {
@@ -216,10 +189,6 @@ def verify():
         mongo.db.user_verification.delete_one({'_id': response['_id']})
         return 'VERIFIED SUCCESSFULLY', 200
 
-    """for record in user_verification:
-        if record['user_verification_code'] == js['user_verification_code']:
-            user_verification.remove(record)
-            return 'VERIFIED SUCCESSFULLY', 200"""
     return 'WRONG CODE', 400
 
 

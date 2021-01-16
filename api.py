@@ -150,7 +150,8 @@ def client_login():
 
     client = Client(TWILLIO_ACCOUNT_SID, TWILLIO_AUTCH_TOKEN)
 
-    user_verification_code = secrets.token_hex(3)
+    # user_verification_code = secrets.token_hex(3)
+    user_verification_code = secrets.choice(range(100000, 999999))
     mongo.db.user_verification.insert_one({'user_number': js['user_number'], 'user_verification_code': str(user_verification_code)})
 
     message = client.messages.create(

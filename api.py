@@ -147,7 +147,7 @@ def reset_token(name):
                 'client_name': name
             },
             {
-                'client_auth_token': client_auth_token
+                '$set': {'client_auth_token': client_auth_token}
             }
         )
         form = RegistrationForm(request.form)

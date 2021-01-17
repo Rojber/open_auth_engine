@@ -71,7 +71,8 @@ def register():
             'client_name': str(client_name),
             'client_email': str(client_email),
             'client_password': str(client_password),
-            'client_auth_token': client_auth_token
+            'client_auth_token': client_auth_token,
+            'sms_sent': 0
         }
         mongo.db.clients.insert_one(client)
 
@@ -140,7 +141,7 @@ def client_login():
             'client_auth_token': js['auth_token']
         },
         {
-            'client_name': 1
+            'client_name': 1,
         }
     )
     if response is None:
@@ -152,12 +153,22 @@ def client_login():
 
     # user_verification_code = secrets.token_hex(3)
     user_verification_code = secrets.choice(range(100000, 999999))
+
     mongo.db.user_verification.insert_one({'user_number': js['user_number'], 'user_verification_code': str(user_verification_code)})
 
     message = client.messages.create(
         to="+48" + js['user_number'],
         from_="+19379155858",
         body="Twój numer weryfikacyjny w serwisie " + client_name + ": " + str(user_verification_code))
+
+    response = mongo.db.clients.find_one_and_update(
+        {
+            '_id': response['_id']
+        },
+        {
+            '$inc': {'sms_sent': 1}
+        }
+    )
 
     return 'SMS SENT', 200
 

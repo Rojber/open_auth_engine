@@ -19,7 +19,7 @@ TWILLIO_AUTCH_TOKEN = os.environ["TWILLIO_AUTCH_TOKEN"]
 
 class RegistrationForm(Form):
     name = StringField('', [validators.Length(min=2, max=50), validators.DataRequired()], render_kw={"placeholder": "App name"})
-    email = StringField('', [validators.Length(min=6, max=35), validators.DataRequired()],render_kw={"placeholder": "Email"})
+    email = StringField('', [validators.Length(min=6, max=50), validators.DataRequired()],render_kw={"placeholder": "Email"})
     password = PasswordField('', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords must match')

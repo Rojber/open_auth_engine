@@ -18,9 +18,12 @@
     <dd class="col-sm-9">{{ client_email }}</dd>
         <dt class="col-sm-3">Your token: </dt>
     <dd class="col-sm-9">{{ client_token }}</dd>
+        <dt class="col-sm-3">SMS sent: </dt>
+    <dd class="col-sm-9">{{ sms_sent }}</dd>
     </dl>
     </div>
     <a href="{{ url_for('delete', name=client_name) }}" class="btn btn-danger">Delete account</a>
+    <a href="{{ url_for('reset_token', name=client_name) }}" class="btn btn-primary">Reset token</a>
 
 </body>
 </html>

@@ -38,6 +38,9 @@ class LoginForm(Form):
 class DeleteForm(Form):
     accept = BooleanField('I confirm that I want to delete the account', [validators.DataRequired()])
 
+class ResetForm(Form):
+    accept = BooleanField('I confirm that I want to reset token', [validators.DataRequired()])
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -104,7 +107,7 @@ def login():
         if response is None:
             form2 = RegistrationForm(request.form)
             return render_template('register.html', form=form2, form2=form, error="Wrong email or password.")
-        return render_template('info.html', client_name=response['client_name'], client_email=response['client_email'], client_token=response['client_auth_token'])
+        return render_template('info.html', client_name=response['client_name'], client_email=response['client_email'], client_token=response['client_auth_token'], sms_sent=response['sms_sent'])
     else:
         form2 = RegistrationForm(request.form)
         return render_template('register.html', form=form2, form2=form, error="Form error")
@@ -126,6 +129,24 @@ def delete(name):
         return render_template('register.html', form=form, form2=form2, message='Account deleted')
     elif request.method == 'GET':
         return render_template('delete.html', form=deleteForm)
+    else:
+        form = RegistrationForm(request.form)
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, error="Form error")
+
+
+@app.route('/reset_token/<name>', methods=['GET', 'POST'])
+def reset_token(name):
+    resetForm = DeleteForm(request.form)
+
+    if request.method == 'POST' and resetForm.validate():
+        # TODO reset token by client name
+
+        form = RegistrationForm(request.form)
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, message='Token reset successful')
+    elif request.method == 'GET':
+        return render_template('reset.html', form=resetForm)
     else:
         form = RegistrationForm(request.form)
         form2 = LoginForm(request.form)

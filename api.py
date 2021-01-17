@@ -29,7 +29,7 @@ class RegistrationForm(Form):
 
 
 class LoginForm(Form):
-    email = StringField('', [validators.Length(min=6, max=35)], render_kw={"placeholder": "Email"})
+    email = StringField('', [validators.Length(min=6, max=50)], render_kw={"placeholder": "Email"})
     password = PasswordField('', [
         validators.DataRequired()
     ], render_kw={"placeholder": "Password"})

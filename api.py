@@ -38,6 +38,7 @@ class LoginForm(Form):
 class DeleteForm(Form):
     accept = BooleanField('I confirm that I want to delete the account', [validators.DataRequired()])
 
+
 class ResetForm(Form):
     accept = BooleanField('I confirm that I want to reset token', [validators.DataRequired()])
 
@@ -97,7 +98,7 @@ def login():
         response = mongo.db.clients.find_one(
             {
                 'client_email': client_email,
-                'client_password': client_password
+                'client_password': client_password,
             },
             {
                 '_id': 0,
@@ -137,11 +138,18 @@ def delete(name):
 
 @app.route('/reset_token/<name>', methods=['GET', 'POST'])
 def reset_token(name):
-    resetForm = DeleteForm(request.form)
+    resetForm = ResetForm(request.form)
 
     if request.method == 'POST' and resetForm.validate():
-        # TODO reset token by client name
-
+        client_auth_token = secrets.token_hex(24)
+        mongo.db.clients.update_one(
+            {
+                'client_name': name
+            },
+            {
+                '$set': {'client_auth_token': client_auth_token}
+            }
+        )
         form = RegistrationForm(request.form)
         form2 = LoginForm(request.form)
         return render_template('register.html', form=form, form2=form2, message='Token reset successful')

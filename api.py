@@ -117,7 +117,7 @@ def login():
         session['username'] = client_email
         session['password'] = client_password
         return render_template('info.html', client_name=response['client_name'], client_email=response['client_email'], client_token=response['client_auth_token'], sms_sent=response['sms_sent'])
-    if request.method=="GET":
+    if request.method == "GET":
         if 'username' not in session:
             form = RegistrationForm(request.form)
             form2 = LoginForm(request.form)

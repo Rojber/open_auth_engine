@@ -203,7 +203,7 @@ def client_login():
     message = client.messages.create(
         to="+48" + js['user_number'],
         from_="+19379155858",
-        body="Twój numer weryfikacyjny w serwisie " + client_name + ": " + str(user_verification_code))
+        body="Twój kod weryfikacyjny w serwisie " + client_name + ": " + str(user_verification_code))
 
     response = mongo.db.clients.find_one_and_update(
         {

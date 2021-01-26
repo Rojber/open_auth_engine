@@ -6,11 +6,13 @@
 </head>
 <body>
 {% from "formmacro.html" import render_field %}
+<div class="justify-content-center">
 <form method=post>
 <dl>
     {{ render_field(form.accept) }}
   </dl>
     <input type=submit value=Reset class="btnSubmit">
 </form>
+</div>
 </body>
 </html>

@@ -50,6 +50,12 @@ def index():
     return render_template('register.html', form=form, form2=form2)
 
 
+@app.route('/logout')
+def logout():
+   session.pop('username', None)
+   return redirect(url_for('index'))
+
+
 @app.route('/register', methods=['POST'])
 def register():
     form = RegistrationForm(request.form)
@@ -108,6 +114,7 @@ def login():
         if response is None:
             form2 = RegistrationForm(request.form)
             return render_template('register.html', form=form2, form2=form, error="Wrong email or password.")
+        session['username'] = client_email
         return render_template('info.html', client_name=response['client_name'], client_email=response['client_email'], client_token=response['client_auth_token'], sms_sent=response['sms_sent'])
     else:
         form2 = RegistrationForm(request.form)
@@ -116,6 +123,10 @@ def login():
 
 @app.route('/delete/<name>', methods=['GET', 'POST'])
 def delete(name):
+    if 'username' not in session:
+        form = RegistrationForm(request.form)
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, error="Not logged in")
     deleteForm = DeleteForm(request.form)
 
     if request.method == 'POST' and deleteForm.validate():
@@ -138,6 +149,10 @@ def delete(name):
 
 @app.route('/reset_token/<name>', methods=['GET', 'POST'])
 def reset_token(name):
+    if 'username' not in session:
+        form = RegistrationForm(request.form)
+        form2 = LoginForm(request.form)
+        return render_template('register.html', form=form, form2=form2, error="Not logged in")
     resetForm = ResetForm(request.form)
 
     if request.method == 'POST' and resetForm.validate():

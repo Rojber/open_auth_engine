@@ -8,7 +8,8 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <div class="justify-content-center">
     <h5 class="card-title">Your data</h5>
       <div align = left>
     <dl class="row">
@@ -24,6 +25,7 @@
     </div>
     <a href="{{ url_for('delete', name=client_name) }}" class="btn btn-danger">Delete account</a>
     <a href="{{ url_for('reset_token', name=client_name) }}" class="btn btn-primary">Reset token</a>
+        </div>
 
 </body>
 </html>

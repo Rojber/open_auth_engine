@@ -115,6 +115,26 @@ def login():
             form2 = RegistrationForm(request.form)
             return render_template('register.html', form=form2, form2=form, error="Wrong email or password.")
         session['username'] = client_email
+        session['password'] = client_password
+        return render_template('info.html', client_name=response['client_name'], client_email=response['client_email'], client_token=response['client_auth_token'], sms_sent=response['sms_sent'])
+    if request.method=="GET":
+        if 'username' not in session:
+            form = RegistrationForm(request.form)
+            form2 = LoginForm(request.form)
+            return render_template('register.html', form=form, form2=form2, error="Not logged in")
+        response = mongo.db.clients.find_one(
+            {
+                'client_email': session['username'],
+                'client_password': session['password'],
+            },
+            {
+                '_id': 0,
+                'client_password': 0
+            }
+        )
+        if response is None:
+            form2 = RegistrationForm(request.form)
+            return render_template('register.html', form=form2, form2=form, error="Wrong email or password.")
         return render_template('info.html', client_name=response['client_name'], client_email=response['client_email'], client_token=response['client_auth_token'], sms_sent=response['sms_sent'])
     else:
         form2 = RegistrationForm(request.form)

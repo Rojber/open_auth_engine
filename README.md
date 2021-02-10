@@ -23,6 +23,7 @@ Do uruchomienie naszego API potrzeba tylko podać dane z Twillio oraz connection
 Jako naszą bazę danych wykorzystaliśmy nierelacyjną bazę danych MongoDB wraz z jej pythonowym sterownikiem - PyMongo. Baza jest stosunkowo prosta, ponieważ nasz system nie wymaga zbierania dużej liczby informacji. Posiadamy w niej tylko 2 kolekcje (odpowiednik SQL - owych tablic):
 
 `registered_clients` - przechowująca informacje o klientach (czyli serwisach, które będą korzystać z naszego API). Znajdują się tam podstawowe informacje na temat klienta jak jego adres email, hasło, nazwa, którą podamy w SMS - ach weryfikacyjnych oraz jego token autoryzacyjny - za pomocą tego tokenu klient będzie mógł używać naszego API. Dodatkowo przechowujemy tam też informacje o ilości wysłanych przez API smsów dla tego klienta w celu ułatwienia późniejszego rozliczenia z nim.
+
 `user_verification` - przechowująca numer telefonu użytkownika wraz z wygenerowanym dla niego numerem weryfikacyjnym oraz id klienta. Po poprawnej weryfikacji rekord zostaje usunięty z bazy danych.
 
 Poniższe przedstawiono budowę dokumentów tych kolekcji

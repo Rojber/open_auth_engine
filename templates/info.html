@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Info</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <div class="justify-content-center">
+    <h5 class="card-title">Your data</h5>
+      <div align = left>
+    <dl class="row">
+    <dt class="col-sm-3">App name: </dt>
+    <dd class="col-sm-9">{{ client_name }}</dd>
+        <dt class="col-sm-3">Email: </dt>
+    <dd class="col-sm-9">{{ client_email }}</dd>
+        <dt class="col-sm-3">Your token: </dt>
+    <dd class="col-sm-9">{{ client_token }}</dd>
+        <dt class="col-sm-3">SMS sent: </dt>
+    <dd class="col-sm-9">{{ sms_sent }}</dd>
+    </dl>
+    </div>
+    <a href="{{ url_for('delete', name=client_name) }}" class="btn btn-danger">Delete account</a>
+    <a href="{{ url_for('reset_token', name=client_name) }}" class="btn btn-primary">Reset token</a>
+        </div>
+
+</body>
+</html>
